@@ -54,6 +54,12 @@ public class NBTInputStream extends DataInputStream implements NBTInput, MaxDept
 
 	public NamedTag readTag(int maxDepth) throws IOException {
 		byte id = readByte();
+
+		// Need to not read for name on end tag
+		if(id == 0) {
+		    return new NamedTag("", readTag(id, maxDepth));
+        }
+
 		return new NamedTag(readUTF(), readTag(id, maxDepth));
 	}
 
